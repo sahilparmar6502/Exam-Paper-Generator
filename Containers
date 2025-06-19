@@ -1,0 +1,24 @@
+Docker containers:
+
+🔹 List of Required Docker Containers:
+
+1️⃣ Question Service Container (question-service)
+Handles storing and retrieving question papers from MongoDB.
+
+2️⃣ Paper Generation Service Container (generation-service)
+Implements generate_paper and generate_unique_papers.
+
+3️⃣ PDF Generation Service Container (pdf-service)
+Converts question papers into PDFs.
+
+4️⃣ Download Service Container (download-service)
+Handles /download_paper/<paper_id> requests.
+
+5️⃣ MongoDB Container (mongodb)
+Stores generated question papers.
+
+6️⃣ API Gateway Container (api-gateway)
+Routes requests from the frontend to the appropriate microservice.
+
+7️⃣ React Frontend Container (frontend)
+Runs the React.js frontend to interact with the backend.

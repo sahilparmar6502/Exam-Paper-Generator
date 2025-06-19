@@ -1,0 +1,96 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin123
+      MONGO_INITDB_DATABASE: exam_db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - microservice-network
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: admin123
+      ME_CONFIG_MONGODB_SERVER: mongodb
+    depends_on:
+      - mongodb
+    networks:
+      - microservice-network
+
+  frontend:
+    build: ./frontend
+    container_name: react-frontend
+    restart: always
+    ports:
+      - "3000:80"
+    depends_on:
+      - api-gateway
+    networks:
+      - microservice-network
+
+  api-gateway:
+    build: ./api-gateway
+    container_name: api-gateway
+    restart: always
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongodb
+      - question-service
+    networks:
+      - microservice-network
+
+  question-service:
+    build: ./question-service
+    container_name: question-service
+    restart: always
+    ports:
+      - "5001:5001"
+    depends_on:
+      - mongodb
+    networks:
+      - microservice-network
+  
+  generation-service:
+    build: ./generation-service
+    container_name: generation-service
+    restart: always
+    ports:
+      - "5002:5002"
+    depends_on:
+      - mongodb
+      - question-service
+    networks:
+      - microservice-network
+  
+  pdf-service:
+    build: ./pdf-service
+    container_name: pdf-service
+    restart: always
+    ports:
+      - "5003:5003"
+    volumes:
+      - ./pdfs:/app/pdfs  # Persistent storage for PDFs
+    networks:
+      - microservice-network
+
+volumes:
+  mongodb_data:
+
+networks:
+  microservice-network:
+    driver: bridge

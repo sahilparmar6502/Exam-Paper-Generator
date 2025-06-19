@@ -1,0 +1,69 @@
+📂 exam-paper-generator/
+│── 📂 frontend/              # React.js (Frontend)
+│   ├── Dockerfile
+│   ├── package.json
+│   ├── src/
+│
+│── 📂 api-gateway/           # API Gateway (Handles Routing)
+│   ├── Dockerfile
+│   ├── app.py
+│   ├── requirements.txt
+
+
+    # Stores & Retrieves Questions
+│── 📂 question-service/        # Microservice for storing and retrieving questions
+│── 📂 app/                 # Main application logic
+│   │── 📂 models/          # Database models
+│   │   │── question.py     # Question schema/model for MongoDB
+│   │── 📂 routes/          # API routes for CRUD operations
+│   │   │── question_routes.py   # API endpoints to manage questions
+│   │── 📂 services/        # Business logic layer
+│   │   │── question_service.py  # Functions to fetch/add questions
+│   │── 📂 config/          # Configuration settings
+│   │   │── config.py       # MongoDB connection settings
+│   │── __init__.py         # Initialize Flask app
+│── 📂 tests/               # Unit tests for API and database
+│   │── test_questions.py   # Test cases for question-service
+│── .env                    # Environment variables (MongoDB URI, secrets)
+│── Dockerfile              # Docker container setup for the service
+│── docker-compose.yml      # Define multi-container setup (if needed)
+│── requirements.txt        # Python dependencies (Flask, pymongo, etc.)
+│── app.py                  # Entry point for the Flask application
+│── README.md               # Documentation for this microservice
+🔹 Purpose: This service is responsible for storing, managing, and retrieving questions from the MongoDB database.
+It allows scalability—other services (like generation-service/) can fetch questions without worrying about data storage.
+
+
+│── 📂 generation-service/    # Generates Unique Papers
+│   ├── Dockerfile
+│   ├── app.py
+│   ├── requirements.txt
+Takes user input (e.g., topics, difficulty, total marks).
+Calls question-service/ to fetch required questions.
+Assembles the questions into a structured question paper.
+Returns the final paper to the API Gateway.
+🔹 Example Request:
+
+
+📂 pdf-service/
+│── 📂 app/
+│   │── pdf_generator.py  # Generates PDF from JSON data
+│   │── routes.py         # API endpoints for PDF generation & download
+│── app.py                # Flask entry point
+│── requirements.txt      # Dependencies
+│── Dockerfile            # Container configuration
+
+
+│── 📂 mongodb/               # Database Service
+│   ├── Dockerfile (Optional, if custom)
+│   ├── data/
+│
+│── 📂 kafka/                 # (Optional) Kafka Broker
+│   ├── Dockerfile
+│
+│── 📂 zookeeper/             # (Optional) Zookeeper for Kafka
+│   ├── Dockerfile
+│
+│── docker-compose.yml        # Manages all Containers
+│── .env                      # Stores Environment Variables
+│── README.md 
